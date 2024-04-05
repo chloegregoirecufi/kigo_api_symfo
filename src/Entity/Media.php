@@ -21,6 +21,9 @@ class Media
     #[ORM\Column(length: 255)]
     private ?string $url_img = null;
 
+    #[ORM\OneToOne(inversedBy: 'media', cascade: ['persist', 'remove'])]
+    private ?Post $post = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,18 @@ class Media
     public function setUrlImg(string $url_img): static
     {
         $this->url_img = $url_img;
+
+        return $this;
+    }
+
+    public function getPost(): ?Post
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Post $post): static
+    {
+        $this->post = $post;
 
         return $this;
     }

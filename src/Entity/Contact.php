@@ -18,6 +18,13 @@ class Contact
     #[ORM\Column(length: 255)]
     private ?string $value = null;
 
+    #[ORM\OneToOne(inversedBy: 'contact', cascade: ['persist', 'remove'])]
+    private ?Type $type = null;
+
+    #[ORM\OneToOne(inversedBy: 'contact', cascade: ['persist', 'remove'])]
+    private ?Profil $profil = null;
+
+  
     public function getId(): ?int
     {
         return $this->id;
@@ -34,4 +41,30 @@ class Contact
 
         return $this;
     }
+
+    public function getType(): ?Type
+    {
+        return $this->type;
+    }
+
+    public function setType(?Type $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getProfil(): ?Profil
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(?Profil $profil): static
+    {
+        $this->profil = $profil;
+
+        return $this;
+    }
+
+    
 }

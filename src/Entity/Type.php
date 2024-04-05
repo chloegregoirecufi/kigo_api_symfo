@@ -18,6 +18,9 @@ class Type
     #[ORM\Column(length: 50)]
     private ?string $label = null;
 
+    #[ORM\OneToOne(mappedBy: 'type', cascade: ['persist', 'remove'])]
+    private ?Contact $contact = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -31,6 +34,28 @@ class Type
     public function setLabel(string $label): static
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?Contact $contact): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($contact === null && $this->contact !== null) {
+            $this->contact->setType(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($contact !== null && $contact->getType() !== $this) {
+            $contact->setType($this);
+        }
+
+        $this->contact = $contact;
 
         return $this;
     }

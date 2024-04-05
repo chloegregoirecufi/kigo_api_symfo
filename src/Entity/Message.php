@@ -22,6 +22,11 @@ class Message
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $date_created = null;
 
+    #[ORM\OneToOne(inversedBy: 'message', cascade: ['persist', 'remove'])]
+    private ?Projet $projet = null;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,4 +55,18 @@ class Message
 
         return $this;
     }
+
+    public function getProjet(): ?Projet
+    {
+        return $this->projet;
+    }
+
+    public function setProjet(?Projet $projet): static
+    {
+        $this->projet = $projet;
+
+        return $this;
+    }
+
+   
 }

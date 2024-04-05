@@ -31,6 +31,15 @@ class Post
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updated_date = null;
 
+    #[ORM\OneToOne(mappedBy: 'post', cascade: ['persist', 'remove'])]
+    private ?Projet $projet = null;
+
+    #[ORM\OneToOne(inversedBy: 'post', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
+
+    #[ORM\OneToOne(mappedBy: 'post', cascade: ['persist', 'remove'])]
+    private ?Media $media = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -92,6 +101,57 @@ class Post
     public function setUpdatedDate(\DateTimeInterface $updated_date): static
     {
         $this->updated_date = $updated_date;
+
+        return $this;
+    }
+
+    public function getProjet(): ?Projet
+    {
+        return $this->projet;
+    }
+
+    public function setProjet(Projet $projet): static
+    {
+        // set the owning side of the relation if necessary
+        if ($projet->getPost() !== $this) {
+            $projet->setPost($this);
+        }
+
+        $this->projet = $projet;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getMedia(): ?Media
+    {
+        return $this->media;
+    }
+
+    public function setMedia(?Media $media): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($media === null && $this->media !== null) {
+            $this->media->setPost(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($media !== null && $media->getPost() !== $this) {
+            $media->setPost($this);
+        }
+
+        $this->media = $media;
 
         return $this;
     }
