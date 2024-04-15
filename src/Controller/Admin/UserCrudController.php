@@ -66,6 +66,8 @@ class UserCrudController extends AbstractCrudController
          ->update(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER,
              fn(Action $action) => $action->setLabel('Enregistrer et ajouter un nouveau'));
     }
+
+    
  }
     
 

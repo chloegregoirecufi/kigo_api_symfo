@@ -9,11 +9,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 
 class ProfilCrudController extends AbstractCrudController
 {
+    
+
+
     public static function getEntityFqcn(): string
     {
         return Profil::class;
@@ -34,7 +37,8 @@ class ProfilCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('biography'),
-            IntegerField::new('filière'),
+            IntegerField::new('filiere'),
+            AssociationField::new('user', 'lastname', 'firstname'),
         ];
     }
 
@@ -61,6 +65,14 @@ class ProfilCrudController extends AbstractCrudController
              fn(Action $action) => $action->setLabel('Enregistrer'))
          ->update(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER,
              fn(Action $action) => $action->setLabel('Enregistrer et ajouter un nouveau'));
+    }
+
+
+    public function getFiliere($pageName): ?string
+    {
+        if($pageName->$pageName('filiere') == 0){
+            return 'son';
+        }
     }
  }
     

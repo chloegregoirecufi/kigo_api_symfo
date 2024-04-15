@@ -36,8 +36,8 @@ class PostCrudController extends AbstractCrudController
             TextField::new('title'),
             TextField::new('text'),
             IntegerField::new('type'),
-            DateTimeField::new('created_at'),
-            DateTimeField::new('updated_at'),
+            DateTimeField::new('created_date'),
+            DateTimeField::new('updated_date'),
         ];
     }
 

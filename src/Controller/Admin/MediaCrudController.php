@@ -8,11 +8,17 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class MediaCrudController extends AbstractCrudController
 {
+    //on crée nos constantes
+    public const ALBUM_BASE_PATH = 'upload/images/media';
+    public const ALBUM_UPLOAD_DIR = 'public/upload/images/media';
+
     public static function getEntityFqcn(): string
     {
         return Media::class;
@@ -33,7 +39,18 @@ class MediaCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('label'),
-            TextField::new('url_img'),
+            ImageField::new('url_img', 'image du media')
+                ->setBasePath(self::ALBUM_BASE_PATH)
+                ->setUploadDir(self::ALBUM_UPLOAD_DIR)
+                ->setUploadedFileNamePattern(
+                    //on donne un nom de fichier unique à l'image
+                    fn (UploadedFile $file): string => sprintf(
+                        'upload_%d_%s.%s',
+                        random_int(1, 999),
+                        $file->getFilename(),
+                        $file->guessExtension()
+                    )
+                )
         ];
     }
 

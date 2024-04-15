@@ -33,7 +33,7 @@ class MessageCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('text'),
-            DateField::new('created_at'),
+            DateField::new('date_created'),
         ];
     }
 
