@@ -19,11 +19,11 @@ class Competence
     private ?string $label = null;
 
     #[ORM\ManyToOne(inversedBy: 'competence')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Profil $profil = null;
 
     #[ORM\ManyToOne(inversedBy: 'competence')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Projet $projet = null;
 
     public function getId(): ?int
