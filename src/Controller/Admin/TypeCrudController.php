@@ -8,7 +8,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class TypeCrudController extends AbstractCrudController
@@ -22,8 +21,8 @@ class TypeCrudController extends AbstractCrudController
     {
         //permet de renommer les différentes page
         return $crud
-            ->setPageTitle(Crud::PAGE_INDEX, 'Type')
-            ->setPageTitle(Crud::PAGE_EDIT, 'Modifier les types')
+            ->setPageTitle(Crud::PAGE_INDEX, 'type')
+            ->setPageTitle(Crud::PAGE_EDIT, 'Modifier les type')
             ->setPageTitle(Crud::PAGE_NEW, 'Ajouter un nouveau type');
     }
 
@@ -60,6 +59,4 @@ class TypeCrudController extends AbstractCrudController
          ->update(Crud::PAGE_NEW, Action::SAVE_AND_ADD_ANOTHER,
              fn(Action $action) => $action->setLabel('Enregistrer et ajouter un nouveau'));
     }
- }
-    
-
+}
