@@ -20,6 +20,15 @@ class Filiere
     #[ORM\Column(length: 100)]
     private ?string $label = null;
 
+    #[ORM\OneToMany(mappedBy: 'filiere', targetEntity: User::class)]
+    private Collection $user;
+
+
+    public function __construct()
+    {
+        $this->user = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -37,5 +46,38 @@ class Filiere
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
+            $user->setFiliere($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->user->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getFiliere() === $this) {
+                $user->setFiliere(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
 
 }

@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -43,6 +45,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Post $post = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Contact::class)]
+    private Collection $contact;
+
+    #[ORM\ManyToMany(targetEntity: Competence::class, inversedBy: 'users')]
+    private Collection $competence;
+
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    private ?Filiere $filiere = null;
+
+    public function __construct()
+    {
+        $this->contact = new ArrayCollection();
+        $this->competence = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -180,5 +197,71 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->firstname;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContact(): Collection
+    {
+        return $this->contact;
+    }
+
+    public function addContact(Contact $contact): static
+    {
+        if (!$this->contact->contains($contact)) {
+            $this->contact->add($contact);
+            $contact->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): static
+    {
+        if ($this->contact->removeElement($contact)) {
+            // set the owning side to null (unless already changed)
+            if ($contact->getUser() === $this) {
+                $contact->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Competence>
+     */
+    public function getCompetence(): Collection
+    {
+        return $this->competence;
+    }
+
+    public function addCompetence(Competence $competence): static
+    {
+        if (!$this->competence->contains($competence)) {
+            $this->competence->add($competence);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetence(Competence $competence): static
+    {
+        $this->competence->removeElement($competence);
+
+        return $this;
+    }
+
+    public function getFiliere(): ?Filiere
+    {
+        return $this->filiere;
+    }
+
+    public function setFiliere(?Filiere $filiere): static
+    {
+        $this->filiere = $filiere;
+
+        return $this;
     }
 }

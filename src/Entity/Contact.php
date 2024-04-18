@@ -21,6 +21,9 @@ class Contact
     #[ORM\OneToOne(inversedBy: 'contact', cascade: ['persist', 'remove'])]
     private ?Type $type = null;
 
+    #[ORM\ManyToOne(inversedBy: 'contact')]
+    private ?User $user = null;
+
   
     public function getId(): ?int
     {
@@ -47,6 +50,18 @@ class Contact
     public function setType(?Type $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
