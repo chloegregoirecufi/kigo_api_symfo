@@ -21,9 +21,6 @@ class Contact
     #[ORM\OneToOne(inversedBy: 'contact', cascade: ['persist', 'remove'])]
     private ?Type $type = null;
 
-    #[ORM\OneToOne(inversedBy: 'contact', cascade: ['persist', 'remove'])]
-    private ?Profil $profil = null;
-
   
     public function getId(): ?int
     {
@@ -54,17 +51,6 @@ class Contact
         return $this;
     }
 
-    public function getProfil(): ?Profil
-    {
-        return $this->profil;
-    }
-
-    public function setProfil(?Profil $profil): static
-    {
-        $this->profil = $profil;
-
-        return $this;
-    }
 
     
 }

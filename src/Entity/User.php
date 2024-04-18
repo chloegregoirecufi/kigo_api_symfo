@@ -42,9 +42,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Profil $profil = null;
-
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Post $post = null;
 
     public function getId(): ?int
@@ -154,23 +151,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
-
-        return $this;
-    }
-
-    public function getProfil(): ?Profil
-    {
-        return $this->profil;
-    }
-
-    public function setProfil(Profil $profil): static
-    {
-        // set the owning side of the relation if necessary
-        if ($profil->getUser() !== $this) {
-            $profil->setUser($this);
-        }
-
-        $this->profil = $profil;
 
         return $this;
     }
