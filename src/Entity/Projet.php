@@ -18,9 +18,6 @@ class Projet
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $filiere = null;
-
-    #[ORM\Column]
     private ?bool $isFinish = null;
 
     #[ORM\Column]
@@ -44,18 +41,6 @@ class Projet
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFiliere(): ?int
-    {
-        return $this->filiere;
-    }
-
-    public function setFiliere(int $filiere): static
-    {
-        $this->filiere = $filiere;
-
-        return $this;
     }
 
     public function isIsFinish(): ?bool

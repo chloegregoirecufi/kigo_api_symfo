@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\ProfilRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProfilRepository;
+use ApiPlatform\Metadata\ApiResource;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ProfilRepository::class)]
 #[ApiResource]
@@ -21,8 +21,6 @@ class Profil
     #[ORM\Column(type: Types::TEXT)]
     private ?string $biography = null;
 
-    #[ORM\Column]
-    private ?int $filiere = null;
 
     #[ORM\OneToOne(inversedBy: 'profil', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -56,17 +54,6 @@ class Profil
         return $this;
     }
 
-    public function getFiliere(): ?int
-    {
-        return $this->filiere;
-    }
-
-    public function setFiliere(int $filiere): static
-    {
-        $this->filiere = $filiere;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
