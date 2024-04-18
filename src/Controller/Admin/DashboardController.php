@@ -8,7 +8,6 @@ use App\Entity\Filiere;
 use App\Entity\Media;
 use App\Entity\Message;
 use App\Entity\Post;
-use App\Entity\Profil;
 use App\Entity\Projet;
 use App\Entity\Type;
 use App\Entity\User;
@@ -69,10 +68,6 @@ class DashboardController extends AbstractDashboardController{
         yield MenuItem::subMenu('Gestion des posts', 'fa fa-star')->setSubItems([
             MenuItem::linkToCrud('Ajouter un post', 'fa fa-plus', Post::class)->setAction(Crud::PAGE_NEW),
             MenuItem::linkToCrud('Voir les posts', 'fa fa-eye', Post::class)
-        ]);
-        yield MenuItem::subMenu('Gestion des profils', 'fa fa-star')->setSubItems([
-            MenuItem::linkToCrud('Ajouter un profil', 'fa fa-plus', Profil::class)->setAction(Crud::PAGE_NEW),
-            MenuItem::linkToCrud('Voir les profils', 'fa fa-eye', Profil::class)
         ]);
         yield MenuItem::subMenu('Gestion des projets', 'fa fa-star')->setSubItems([
             MenuItem::linkToCrud('Ajouter un projets', 'fa fa-plus', Projet::class)->setAction(Crud::PAGE_NEW),
