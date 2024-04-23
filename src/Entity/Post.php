@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,14 +33,30 @@ class Post
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updated_date = null;
 
-    #[ORM\OneToOne(mappedBy: 'post', cascade: ['persist', 'remove'])]
-    private ?Projet $projet = null;
-
     #[ORM\OneToOne(inversedBy: 'post', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
     #[ORM\OneToOne(mappedBy: 'post', cascade: ['persist', 'remove'])]
     private ?Media $media = null;
+
+    #[ORM\ManyToMany(targetEntity: Competence::class, inversedBy: 'posts')]
+    private Collection $competence;
+
+    #[ORM\ManyToMany(targetEntity: Filiere::class, inversedBy: 'posts')]
+    private Collection $filiere;
+
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Message::class)]
+    private Collection $message;
+
+    #[ORM\Column]
+    private ?bool $isActive = null;
+
+    public function __construct()
+    {
+        $this->competence = new ArrayCollection();
+        $this->filiere = new ArrayCollection();
+        $this->message = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,22 +123,6 @@ class Post
         return $this;
     }
 
-    public function getProjet(): ?Projet
-    {
-        return $this->projet;
-    }
-
-    public function setProjet(Projet $projet): static
-    {
-        // set the owning side of the relation if necessary
-        if ($projet->getPost() !== $this) {
-            $projet->setPost($this);
-        }
-
-        $this->projet = $projet;
-
-        return $this;
-    }
 
     public function getUser(): ?User
     {
@@ -152,6 +154,96 @@ class Post
         }
 
         $this->media = $media;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Competence>
+     */
+    public function getCompetence(): Collection
+    {
+        return $this->competence;
+    }
+
+    public function addCompetence(Competence $competence): static
+    {
+        if (!$this->competence->contains($competence)) {
+            $this->competence->add($competence);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetence(Competence $competence): static
+    {
+        $this->competence->removeElement($competence);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Filiere>
+     */
+    public function getFiliere(): Collection
+    {
+        return $this->filiere;
+    }
+
+    public function addFiliere(Filiere $filiere): static
+    {
+        if (!$this->filiere->contains($filiere)) {
+            $this->filiere->add($filiere);
+        }
+
+        return $this;
+    }
+
+    public function removeFiliere(Filiere $filiere): static
+    {
+        $this->filiere->removeElement($filiere);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessage(): Collection
+    {
+        return $this->message;
+    }
+
+    public function addMessage(Message $message): static
+    {
+        if (!$this->message->contains($message)) {
+            $this->message->add($message);
+            $message->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): static
+    {
+        if ($this->message->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getPost() === $this) {
+                $message->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

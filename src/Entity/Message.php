@@ -22,8 +22,9 @@ class Message
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $date_created = null;
 
-    #[ORM\OneToOne(inversedBy: 'message', cascade: ['persist', 'remove'])]
-    private ?Projet $projet = null;
+    #[ORM\ManyToOne(inversedBy: 'message')]
+    private ?Post $post = null;
+
 
 
 
@@ -56,17 +57,18 @@ class Message
         return $this;
     }
 
-    public function getProjet(): ?Projet
+    public function getPost(): ?Post
     {
-        return $this->projet;
+        return $this->post;
     }
 
-    public function setProjet(?Projet $projet): static
+    public function setPost(?Post $post): static
     {
-        $this->projet = $projet;
+        $this->post = $post;
 
         return $this;
     }
+
 
    
 }

@@ -23,10 +23,14 @@ class Filiere
     #[ORM\OneToMany(mappedBy: 'filiere', targetEntity: User::class)]
     private Collection $user;
 
+    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'filiere')]
+    private Collection $posts;
+
 
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
 
@@ -80,6 +84,33 @@ class Filiere
     public function __toString(): string
     {
         return $this->label;
+    }
+
+    /**
+     * @return Collection<int, Post>
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): static
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->addFiliere($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): static
+    {
+        if ($this->posts->removeElement($post)) {
+            $post->removeFiliere($this);
+        }
+
+        return $this;
     }
 
 }

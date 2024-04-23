@@ -21,16 +21,16 @@ class Competence
     private ?string $label = null;
 
 
-    #[ORM\ManyToOne(inversedBy: 'competence')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?Projet $projet = null;
-
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'competence')]
     private Collection $users;
+
+    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'competence')]
+    private Collection $posts;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -50,18 +50,6 @@ class Competence
         return $this;
     }
 
-
-    public function getProjet(): ?Projet
-    {
-        return $this->projet;
-    }
-
-    public function setProjet(?Projet $projet): static
-    {
-        $this->projet = $projet;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, User>
@@ -85,6 +73,33 @@ class Competence
     {
         if ($this->users->removeElement($user)) {
             $user->removeCompetence($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Post>
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): static
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->addCompetence($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): static
+    {
+        if ($this->posts->removeElement($post)) {
+            $post->removeCompetence($this);
         }
 
         return $this;
