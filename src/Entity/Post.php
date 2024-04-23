@@ -30,7 +30,7 @@ class Post
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $created_date = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable:true)]
     private ?\DateTimeInterface $updated_date = null;
 
     #[ORM\OneToOne(inversedBy: 'post', cascade: ['persist', 'remove'])]
